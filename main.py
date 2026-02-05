@@ -5,6 +5,7 @@ import requests
 from requests.adapters import HTTPAdapter, Retry
 import feedparser
 import source_helper
+import command_window
 
 PROG = "WeatherPeg"
 class GUI:
@@ -37,6 +38,14 @@ class GUI:
             padx=10, pady=10, wraplength=750
         )
         current_warning_summary.pack()
+        self.root.bind("<F6>", self.open_command_window)
+        self.command_window = None
+
+    def open_command_window(self, event=None):
+        """Open the command window"""
+        if self.command_window is None or not self.command_window.cmd_window.winfo_exists():
+            self.command_window = command_window.CommandWindow(self.root, fullscreen_func=ScreenState(self).toggle_fullscreen)
+            self.command_window.create_command_window()
 
 class ScreenState():
     """Manage screen state such as fullscreen toggling."""
