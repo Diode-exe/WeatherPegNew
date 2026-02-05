@@ -38,6 +38,18 @@ class GUI:
         )
         current_warning_summary.pack()
 
+class ScreenState():
+    """Manage screen state such as fullscreen toggling."""
+    def __init__(self, gui):
+        self.gui = gui
+        self.root = gui.root
+        self.fullscreen = False
+        self.root.bind("<F11>", self.toggle_fullscreen)
+
+    def toggle_fullscreen(self, event=None):
+        """Toggle fullscreen mode"""
+        current_fullscreen = self.root.attributes("-fullscreen")
+        self.root.attributes("-fullscreen", not current_fullscreen)
 
 class Networking:
     """Networking utilities with retry logic."""
@@ -120,6 +132,7 @@ class WeatherFetcher:
             print(f"Error fetching weather data: {e}")
 
 gui_class = GUI()
+fullscreen_manager = ScreenState(gui_class)
 weather_fetcher = WeatherFetcher(gui_class)
 weather_fetcher.get_weather()
 gui_class.root.mainloop()
