@@ -1,7 +1,7 @@
 source = "txt/source.txt"
 try:
     with open(source, "r", encoding="utf-8") as RSS:
-        RSS_URL = RSS.read()
+        RSS_URL = RSS.read().strip()
 except FileNotFoundError:
     print(f"[WARN] {source} not found!")
     print("You need a file called source.txt with a URL pointing towards an XML file so the software knows")

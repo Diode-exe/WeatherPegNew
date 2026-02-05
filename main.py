@@ -20,10 +20,10 @@ class GUI:
                             padx=10, pady=10, wraplength=750)
         title_label.pack()
 
-        current_warning_title_var = tk.StringVar(value="No warnings")
-        current_warning_summary_var = tk.StringVar(value="No warnings in effect.")
+        self.current_warning_title_var = tk.StringVar(value="No warnings")
+        self.current_warning_summary_var = tk.StringVar(value="No warnings in effect.")
         current_warning_title = tk.Label(
-                self.root, textvariable=current_warning_title_var,
+                self.root, textvariable=self.current_warning_title_var,
                 fg="lime", bg="black",
                 font=("VCR OSD Mono", 16, "bold"), justify="left",
                 padx=10, pady=10, wraplength=750
@@ -31,7 +31,7 @@ class GUI:
         current_warning_title.pack()
 
         current_warning_summary = tk.Label(
-            self.root, textvariable=current_warning_summary_var,
+            self.root, textvariable=self.current_warning_summary_var,
             fg="lime", bg="black",
             font=("VCR OSD Mono", 16, "bold"), justify="left",
             padx=10, pady=10, wraplength=750
@@ -69,39 +69,55 @@ class WeatherFetcher:
     def __init__(self, gui):
         self.gui = gui
         self.networking = Networking()
+        self.warning_title = "No warnings"
+        self.warning_summary = "No warnings in effect."
 
     def get_weather(self):
         """Fetch and process weather data from RSS feed."""
-        response = self.networking.http_get(url=source_helper.RSS_URL)
-        feed = feedparser.parse(response.content)
+        try:
+            response = self.networking.http_get(url=source_helper.RSS_URL)
+            # print(f"DEBUG: HTTP {getattr(response, 'status_code', '<no-status>')} {getattr(response, 'url', '<no-url>')}")
+            # try:
+            #     snippet = response.content[:200].decode('utf-8', errors='replace')
+            # except Exception:
+            #     snippet = repr(response.content[:200])
+            # print("DEBUG: response content snippet:\n", snippet)
 
-        for entry in feed.entries:
-            if entry.category == "Warnings and Watches":
-                if not entry.summary == "No watches or warnings in effect.":
-                    warning_summary = entry.summary
-                if entry.summary == "No watches or warnings in effect.":
-                    warning_summary = "No watches or warnings in effect."
-                warning_title = entry.title
+            feed = feedparser.parse(response.content)
+            # print(f"DEBUG: parsed feed, entries={len(feed.entries)}")
+            # print("DEBUG: entry categories:", [getattr(e, 'category', None) for e in feed.entries])
 
-        for entry in feed.entries:
-            if entry.category == "Current Conditions":
-                current_title = entry.title
-                current_link = entry.link
+            for entry in feed.entries:
+                if entry.category == "Warnings and Watches":
+                    if not entry.summary == "No watches or warnings in effect.":
+                        self.warning_summary = entry.summary
+                    if entry.summary == "No watches or warnings in effect.":
+                        self.warning_summary = "No watches or warnings in effect."
+                    self.warning_title = entry.title
 
-                # Decode HTML entities and clean text
-                current_summary = html.unescape(entry.summary)
-                current_summary = re.sub(r'<[^>]+>', '', current_summary)
+            for entry in feed.entries:
+                if entry.category == "Current Conditions":
+                    current_title = entry.title
+                    current_link = entry.link
 
-                print("Current Conditions Updated:")
-                print("Entry title:", current_title)
-                print("Entry summary:", current_summary)
-                print("Entry link:", current_link)
-                print("-" * 50)
-                self.gui.title_var.set(current_title)
+                    # Decode HTML entities and clean text
+                    current_summary = html.unescape(entry.summary)
+                    current_summary = re.sub(r'<[^>]+>', '', current_summary)
 
-                # link_var.set(current_link)
-                # if Config.get_config_bool("show_scroller"):
-                #     scrolling_summary.update_text(current_summary)
+                    print("Current Conditions Updated:")
+                    print("Entry title:", current_title)
+                    print("Entry summary:", current_summary)
+                    print("Entry link:", current_link)
+                    print("-" * 50)
+                    self.gui.title_var.set(current_title)
+                    self.gui.current_warning_title_var.set(self.warning_title)
+                    self.gui.current_warning_summary_var.set(self.warning_summary)
+
+                    # link_var.set(current_link)
+                    # if Config.get_config_bool("show_scroller"):
+                    #     scrolling_summary.update_text(current_summary)
+        except Exception as e:
+            print(f"Error fetching weather data: {e}")
 
 gui_class = GUI()
 weather_fetcher = WeatherFetcher(gui_class)
