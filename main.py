@@ -44,7 +44,9 @@ class GUI:
     def open_command_window(self, event=None):
         """Open the command window"""
         if self.command_window is None or not self.command_window.cmd_window.winfo_exists():
-            self.command_window = command_window.CommandWindow(self.root, fullscreen_func=ScreenState(self).toggle_fullscreen)
+            self.command_window = command_window.CommandWindow(self.root,
+            fullscreen_func=ScreenState(self).toggle_fullscreen,
+            refresh_func=WeatherFetcher(self).get_weather)
             self.command_window.create_command_window()
 
 class ScreenState():
