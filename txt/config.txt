@@ -1,0 +1,14 @@
+show_warning: 1
+show_buttons: 1
+show_instruction: 1
+do_tts: 1\0
+show_link: 1
+mode: 1
+show_cmd: 1
+show_display: 1
+webserver: 1
+port: 2046
+write_log: 1
+show_scroller: 1
+refresh_delay: 120000
+flash_delay: 600000
