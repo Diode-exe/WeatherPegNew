@@ -1,11 +1,15 @@
 import tkinter as tk
 import html
+import os
 import re
+import datetime
 import requests
 from requests.adapters import HTTPAdapter, Retry
 import feedparser
 import source_helper
 import command_window
+from config import Config
+import logging
 
 PROG = "WeatherPeg"
 class GUI:
@@ -16,30 +20,41 @@ class GUI:
         self.root.configure(bg="black")
         self.root.geometry("800x600")
         self.title_var = tk.StringVar(value="weather")
-        title_label = tk.Label(self.root, textvariable=self.title_var, fg="lime", bg="black",
+        self.title_label = tk.Label(self.root, textvariable=self.title_var, fg="lime", bg="black",
                             font=("VCR OSD Mono", 16, "bold"), justify="left",
                             padx=10, pady=10, wraplength=750)
-        title_label.pack()
+        self.title_label.pack()
 
         self.current_warning_title_var = tk.StringVar(value="No warnings")
         self.current_warning_summary_var = tk.StringVar(value="No warnings in effect.")
-        current_warning_title = tk.Label(
+        self.current_warning_title = tk.Label(
                 self.root, textvariable=self.current_warning_title_var,
                 fg="lime", bg="black",
                 font=("VCR OSD Mono", 16, "bold"), justify="left",
                 padx=10, pady=10, wraplength=750
         )
-        current_warning_title.pack()
+        self.current_warning_title.pack()
 
-        current_warning_summary = tk.Label(
+        self.current_warning_summary = tk.Label(
             self.root, textvariable=self.current_warning_summary_var,
             fg="lime", bg="black",
             font=("VCR OSD Mono", 16, "bold"), justify="left",
             padx=10, pady=10, wraplength=750
         )
-        current_warning_summary.pack()
+
+        self.timestamp_var = tk.StringVar()
+        self.timestamp_label = tk.Label(
+            self.root, textvariable=self.timestamp_var,
+            fg="yellow", bg="black",
+            font=("Courier", 10)
+        )
+        self.timestamp_label.pack(side=tk.BOTTOM, pady=10)
+
+        self.current_warning_summary.pack()
         self.root.bind("<F6>", self.open_command_window)
         self.command_window = None
+        # start the recurring timestamp updates
+        self.update_timestamp()
 
     def open_command_window(self, event=None):
         """Open the command window"""
@@ -48,6 +63,11 @@ class GUI:
             fullscreen_func=ScreenState(self).toggle_fullscreen,
             refresh_func=WeatherFetcher(self).get_weather)
             self.command_window.create_command_window()
+
+    def update_timestamp(self):
+        """Update the timestamp every second."""
+        self.timestamp_var.set(f"Current time is {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        self.root.after(1000, self.update_timestamp)  # Update every second
 
 class ScreenState():
     """Manage screen state such as fullscreen toggling."""
@@ -141,6 +161,28 @@ class WeatherFetcher:
                     #     scrolling_summary.update_text(current_summary)
         except Exception as e:
             print(f"Error fetching weather data: {e}")
+
+    def logger(self):
+        """Log current weather data to a file if enabled in config."""
+        if Config.get_config_bool("write_log"):
+            filename = "txt/history.txt"
+            logged_time = self.gui.timestamp_var.get()
+            # Ensure directory exists
+            os.makedirs(os.path.dirname(filename), exist_ok=True)
+            if os.path.exists(filename):
+                logging.info(f"Found {filename}")
+            else:
+                logging.info(f"Could not find {filename}, but created it")
+            with open(filename, "a", encoding="utf-8") as f:
+                    f.write(f"{current_title}\n")
+                    f.write(f"Summary: {current_summary}\n")
+                    f.write(f"Coords/Link: {current_link}\n")
+                    f.write(f"Current warning: {warning_summary}\n")
+                    f.write(f"Logged time: {logged_time}\n")
+                    f.write("-" * 50 + "\n")
+            logging.info(f"Logged current weather to {filename}")
+        else:
+            logging.info("Not writing to log")
 
 gui_class = GUI()
 fullscreen_manager = ScreenState(gui_class)
