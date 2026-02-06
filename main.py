@@ -1,4 +1,5 @@
 import tkinter as tk
+import logging
 import html
 import os
 import re
@@ -9,7 +10,6 @@ import feedparser
 import source_helper
 import command_window
 from config import Config
-import logging
 
 PROG = "WeatherPeg"
 class GUI:
@@ -19,11 +19,17 @@ class GUI:
         self.root.title(PROG)
         self.root.configure(bg="black")
         self.root.geometry("800x600")
-        self.title_var = tk.StringVar(value="weather")
+        self.title_var = tk.StringVar(value="Loading weather data...")
         self.title_label = tk.Label(self.root, textvariable=self.title_var, fg="lime", bg="black",
                             font=("VCR OSD Mono", 16, "bold"), justify="left",
                             padx=10, pady=10, wraplength=750)
         self.title_label.pack()
+
+        self.summary_var = tk.StringVar(value="Loading weather data...")
+        self.summary_label = tk.Label(self.root, textvariable=self.summary_var, fg="lime", bg="black",
+                    font=("VCR OSD Mono", 16, "bold"), justify="left",
+                    padx=10, pady=10, wraplength=750)
+        self.summary_label.pack()
 
         self.current_warning_title_var = tk.StringVar(value="No warnings")
         self.current_warning_summary_var = tk.StringVar(value="No warnings in effect.")
@@ -140,19 +146,20 @@ class WeatherFetcher:
 
             for entry in feed.entries:
                 if entry.category == "Current Conditions":
-                    current_title = entry.title
-                    current_link = entry.link
+                    self.current_title = entry.title
+                    self.current_link = entry.link
 
                     # Decode HTML entities and clean text
-                    current_summary = html.unescape(entry.summary)
-                    current_summary = re.sub(r'<[^>]+>', '', current_summary)
+                    self.current_summary = html.unescape(entry.summary)
+                    self.current_summary = re.sub(r'<[^>]+>', '', self.current_summary)
 
                     print("Current Conditions Updated:")
-                    print("Entry title:", current_title)
-                    print("Entry summary:", current_summary)
-                    print("Entry link:", current_link)
+                    print("Entry title:", self.current_title)
+                    print("Entry summary:", self.current_summary)
+                    print("Entry link:", self.current_link)
                     print("-" * 50)
-                    self.gui.title_var.set(current_title)
+                    self.gui.title_var.set(self.current_title)
+                    self.gui.summary_var.set(self.current_summary)
                     self.gui.current_warning_title_var.set(self.warning_title)
                     self.gui.current_warning_summary_var.set(self.warning_summary)
 
@@ -164,7 +171,7 @@ class WeatherFetcher:
 
     def logger(self):
         """Log current weather data to a file if enabled in config."""
-        if Config.get_config_bool("write_log"):
+        if Config.get_config_bool(self, key="write_log"):
             filename = "txt/history.txt"
             logged_time = self.gui.timestamp_var.get()
             # Ensure directory exists
