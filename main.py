@@ -59,6 +59,9 @@ class GUI:
         self.current_warning_summary.pack()
         self.root.bind("<F6>", self.open_command_window)
         self.command_window = None
+        self.current_title = None
+        self.current_summary = None
+        self.current_link = None
         # start the recurring timestamp updates
         self.update_timestamp()
 
@@ -120,6 +123,9 @@ class WeatherFetcher:
         self.networking = Networking()
         self.warning_title = "No warnings"
         self.warning_summary = "No warnings in effect."
+        self.current_title = "none"
+        self.current_summary = "none"
+        self.current_link = "none"
 
     def get_weather(self):
         """Fetch and process weather data from RSS feed."""
@@ -181,12 +187,12 @@ class WeatherFetcher:
             else:
                 logging.info(f"Could not find {filename}, but created it")
             with open(filename, "a", encoding="utf-8") as f:
-                    f.write(f"{current_title}\n")
-                    f.write(f"Summary: {current_summary}\n")
-                    f.write(f"Coords/Link: {current_link}\n")
-                    f.write(f"Current warning: {warning_summary}\n")
-                    f.write(f"Logged time: {logged_time}\n")
-                    f.write("-" * 50 + "\n")
+                f.write(f"{self.current_title}\n")
+                f.write(f"Summary: {self.current_summary}\n")
+                f.write(f"Coords/Link: {self.current_link}\n")
+                f.write(f"Current warning: {self.warning_summary}\n")
+                f.write(f"Logged time: {logged_time}\n")
+                f.write("-" * 50 + "\n")
             logging.info(f"Logged current weather to {filename}")
         else:
             logging.info("Not writing to log")
