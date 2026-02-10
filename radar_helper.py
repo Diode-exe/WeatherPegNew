@@ -35,6 +35,11 @@ async def fetch_radar(root_window=None, status_var=None):
         with open(new_filename, "wb") as f:
             f.write(latest_png)
 
+        if status_var is not None and root_window is not None:
+            root_window.after(0, lambda: status_var.set("Radar image fetched successfully."))
+            root_window.after(2000, lambda: status_var.set(""))
+
+
         return new_filename
     except Exception:
         logging.exception("Error in fetch_radar")

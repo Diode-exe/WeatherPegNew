@@ -102,6 +102,8 @@ class GUI:
                 self.root,
                 fullscreen_func=self.fullscreen_manager.toggle_fullscreen,
                 refresh_func=self.weather_fetcher.get_weather,
+                status_var=self.status_var,
+                gui=self
             )
             self.command_window.create_command_window()
             self.command_window.cmd_window.lift()

@@ -4,9 +4,11 @@ import radar_helper
 
 class CommandWindow:
     """Class to create and manage the command window"""
-    def __init__(self, root_window, fullscreen_func=None, refresh_func=None):
+    def __init__(self, root_window, fullscreen_func=None, refresh_func=None, status_var=None, gui=None):
         self.fullscreen_func = fullscreen_func
         self.refresh_func = refresh_func
+        self.status_var = status_var
+        self.gui = gui
         self.cmd_window = tk.Toplevel(root_window)
         self.cmd_window.title("WeatherPeg Commands")
         self.cmd_window.geometry("")
@@ -32,7 +34,7 @@ class CommandWindow:
             refresh_button.pack(pady=10)
             radar_button = tk.Button(
                 self.cmd_window, text="Open radar (F2)",
-                command=radar_helper.open_radar,
+                command=lambda event=None: radar_helper.open_radar(root_window=self.cmd_window, status_var=self.gui.status_var, event=event),
                 bg="blue", fg="white", font=("VCR OSD Mono", 12)
             )
             radar_button.pack(pady=5)
