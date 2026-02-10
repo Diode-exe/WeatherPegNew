@@ -1,5 +1,7 @@
 import tkinter as tk
 
+import radar_helper
+
 class CommandWindow:
     """Class to create and manage the command window"""
     def __init__(self, root_window, fullscreen_func=None, refresh_func=None):
@@ -28,3 +30,9 @@ class CommandWindow:
                 bg="green", fg="yellow", font=("VCR OSD Mono", 12)
             )
             refresh_button.pack(pady=10)
+            radar_button = tk.Button(
+                self.cmd_window, text="Open radar (F2)",
+                command=radar_helper.open_radar,
+                bg="blue", fg="white", font=("VCR OSD Mono", 12)
+            )
+            radar_button.pack(pady=5)

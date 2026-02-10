@@ -11,6 +11,7 @@ import source_helper
 import command_window
 from config import Config
 from scrolling_text_widget import ScrollingTextWidget
+import radar_helper
 
 PROG = "WeatherPeg"
 DESIGNED_BY = "Designed by Diode-exe"
@@ -109,6 +110,7 @@ class ScreenState():
         self.root = gui.root
         self.fullscreen = False
         self.root.bind("<F11>", self.toggle_fullscreen)
+        self.root.bind("<F2>", radar_helper.open_radar)
 
     def toggle_fullscreen(self, event=None):
         """Toggle fullscreen mode"""
