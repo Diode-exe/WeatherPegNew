@@ -62,15 +62,20 @@ class GUI:
         self.current_title = None
         self.current_summary = None
         self.current_link = None
+        # single instances to avoid rebinding events / recreating sessions
+        self.fullscreen_manager = ScreenState(self)
+        self.weather_fetcher = WeatherFetcher(self)
         # start the recurring timestamp updates
         self.update_timestamp()
 
     def open_command_window(self, event=None):
         """Open the command window"""
         if self.command_window is None or not self.command_window.cmd_window.winfo_exists():
-            self.command_window = command_window.CommandWindow(self.root,
-            fullscreen_func=ScreenState(self).toggle_fullscreen,
-            refresh_func=WeatherFetcher(self).get_weather)
+            self.command_window = command_window.CommandWindow(
+                self.root,
+                fullscreen_func=self.fullscreen_manager.toggle_fullscreen,
+                refresh_func=self.weather_fetcher.get_weather,
+            )
             self.command_window.create_command_window()
 
     def update_timestamp(self):
