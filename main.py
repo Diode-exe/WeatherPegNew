@@ -10,8 +10,11 @@ import feedparser
 import source_helper
 import command_window
 from config import Config
+from scrolling_text_widget import ScrollingTextWidget
 
 PROG = "WeatherPeg"
+DESIGNED_BY = "Designed by Diode-exe"
+
 class GUI:
     """Graphical User Interface setup."""
     def __init__(self):
@@ -56,6 +59,13 @@ class GUI:
         )
         self.timestamp_label.pack(side=tk.BOTTOM, pady=10)
 
+        designed_by_label = tk.Label(
+            self.root, text=DESIGNED_BY,
+            fg="cyan", bg="black",
+            font=("Courier", 10), justify="left"
+        )
+        designed_by_label.pack(side=tk.BOTTOM, pady=10, padx=10)
+
         self.current_warning_summary.pack()
         self.root.bind("<F6>", self.open_command_window)
         self.command_window = None
@@ -77,6 +87,7 @@ class GUI:
                 refresh_func=self.weather_fetcher.get_weather,
             )
             self.command_window.create_command_window()
+            self.command_window.cmd_window.lift()
 
     def update_timestamp(self):
         """Update the timestamp every second."""
@@ -205,5 +216,7 @@ class WeatherFetcher:
 gui_class = GUI()
 fullscreen_manager = ScreenState(gui_class)
 weather_fetcher = WeatherFetcher(gui_class)
+# Open the command window on startup
+gui_class.open_command_window()
 weather_fetcher.get_weather()
 gui_class.root.mainloop()
