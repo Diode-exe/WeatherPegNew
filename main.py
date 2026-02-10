@@ -28,11 +28,19 @@ class GUI:
                             padx=10, pady=10, wraplength=750)
         self.title_label.pack()
 
+        # optional scrolling summary (placed under title)
+        self.scrolling_summary = None
+        try:
+            if Config.get_config_bool(self, key="show_scroller"):
+                self.scrolling_summary = ScrollingTextWidget(self.root, "Loading weather data...", width=80, speed=150)
+        except Exception:
+            self.scrolling_summary = None
+
         self.summary_var = tk.StringVar(value="Loading weather data...")
-        self.summary_label = tk.Label(self.root, textvariable=self.summary_var, fg="lime", bg="black",
-                    font=("VCR OSD Mono", 16, "bold"), justify="left",
-                    padx=10, pady=10, wraplength=750)
-        self.summary_label.pack()
+        # self.summary_label = tk.Label(self.root, textvariable=self.summary_var, fg="lime", bg="black",
+        #             font=("VCR OSD Mono", 16, "bold"), justify="left",
+        #             padx=10, pady=10, wraplength=750)
+        # self.summary_label.pack()
 
         self.current_warning_title_var = tk.StringVar(value="No warnings")
         self.current_warning_summary_var = tk.StringVar(value="No warnings in effect.")
@@ -142,6 +150,8 @@ class WeatherFetcher:
         self.current_title = "none"
         self.current_summary = "none"
         self.current_link = "none"
+        # Scroller widget is created by the GUI; keep a reference if needed
+        self.scrolling_summary = None
 
     def get_weather(self):
         """Fetch and process weather data from RSS feed."""
@@ -185,9 +195,12 @@ class WeatherFetcher:
                     self.gui.current_warning_title_var.set(self.warning_title)
                     self.gui.current_warning_summary_var.set(self.warning_summary)
 
-                    # link_var.set(current_link)
-                    # if Config.get_config_bool("show_scroller"):
-                    #     scrolling_summary.update_text(current_summary)
+                    # update scrolling summary widget if present
+                    if getattr(self.gui, 'scrolling_summary', None):
+                        try:
+                            self.gui.scrolling_summary.update_text(self.current_summary)
+                        except Exception:
+                            pass
         except Exception as e:
             print(f"Error fetching weather data: {e}")
 
