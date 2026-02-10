@@ -1,5 +1,7 @@
 import os
 import asyncio
+import threading
+import logging
 from env_canada import ECRadar
 from PIL import Image
 import source_helper
@@ -27,9 +29,13 @@ async def fetch_radar():
 
 def open_radar(event=None):
     """Open the latest radar image."""
-    # Run async function and get filename
-    new_filename = asyncio.run(fetch_radar())
 
-    # Open and show image
-    img = Image.open(new_filename)
-    img.show()
+    def _fetch_and_show():
+        try:
+            new_filename = asyncio.run(fetch_radar())
+            img = Image.open(new_filename)
+            img.show()
+        except Exception:
+            logging.exception("Failed to fetch or show radar image")
+
+    threading.Thread(target=_fetch_and_show, daemon=True).start()
