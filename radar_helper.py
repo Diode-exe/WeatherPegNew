@@ -6,7 +6,7 @@ import source_helper
 
 async def fetch_radar():
     """Fetch the latest radar image and save it with a unique filename."""
-    radar = ECRadar(COORDINATES=(source_helper.COORDINATES))
+    radar = ECRadar(coordinates=source_helper.COORDINATES)
     latest_png = await radar.get_latest_frame()
 
     filename = "images/radar_img.png"
