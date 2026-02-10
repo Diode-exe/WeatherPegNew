@@ -60,6 +60,14 @@ class GUI:
             padx=10, pady=10, wraplength=750
         )
 
+        self.status_var = tk.StringVar(value="")
+        self.status_label = tk.Label(
+            self.root, textvariable=self.status_var,
+            fg="yellow", bg="black",
+            font=("Courier", 10)
+        )
+        self.status_label.pack(side=tk.BOTTOM, pady=10)
+
         self.timestamp_var = tk.StringVar()
         self.timestamp_label = tk.Label(
             self.root, textvariable=self.timestamp_var,
@@ -110,7 +118,7 @@ class ScreenState():
         self.root = gui.root
         self.fullscreen = False
         self.root.bind("<F11>", self.toggle_fullscreen)
-        self.root.bind("<F2>", radar_helper.open_radar)
+        self.root.bind("<F2>", lambda event=None: radar_helper.open_radar(root_window=self.root, status_var=self.gui.status_var, event=event))
 
     def toggle_fullscreen(self, event=None):
         """Toggle fullscreen mode"""
