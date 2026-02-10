@@ -207,6 +207,8 @@ class WeatherFetcher:
                     self.gui.current_warning_title_var.set(self.warning_title)
                     self.gui.current_warning_summary_var.set(self.warning_summary)
 
+                    self.logger()
+
                     # update scrolling summary widget if present
                     if getattr(self.gui, 'scrolling_summary', None):
                         try:
@@ -235,8 +237,32 @@ class WeatherFetcher:
                 f.write(f"Logged time: {logged_time}\n")
                 f.write("-" * 50 + "\n")
             logging.info(f"Logged current weather to {filename}")
+            self.dlhistory()
         else:
             logging.info("Not writing to log")
+
+    def dlhistory(self):
+        """Download the RSS feed history to an XML file"""
+        url = source_helper.RSS_URL
+        filename = "history/weatherpegsource.xml"
+
+        # If file exists, append a number
+        base, ext = os.path.splitext(filename)
+        counter = 1
+        new_filename = filename
+
+        # Ensure directory exists
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+
+        while os.path.exists(new_filename):
+            new_filename = f"{base}_{counter}{ext}"
+            counter += 1
+
+        response = self.networking.http_get(url, stream=True)
+        with open(new_filename, "wb") as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                f.write(chunk)
+                logging.info(f"Download complete! Saved as {new_filename}")
 
 gui_class = GUI()
 fullscreen_manager = ScreenState(gui_class)

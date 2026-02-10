@@ -34,3 +34,12 @@
 
 - Displays current weather conditions, forecasts, and warnings.
 - Configurable GUI with options for full-screen mode, windowed mode, and customizable colors.
+
+### Common problems
+
+- **Issue**: The application does not display weather data or shows an error message.
+  - **Solution**: Ensure that the RSS feed URL in `txt/source.txt` is correct and accessible. Check your internet connection and try again.
+- **Issue**: The application gets stuck opening a small white box
+- **Solution**: This is likely due to failing to fetch weather information. Check the RSS feed URL and your internet connection.
+- **Issue**: The radar image does not open or shows an error.
+  - **Solution**: Ensure that the radar image URL is correct and accessible. Check your internet connection and try again.
