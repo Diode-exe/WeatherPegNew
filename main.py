@@ -141,6 +141,7 @@ class ScreenState():
         self.gui.status_label.config(fg="black", bg="black")
         self.gui.timestamp_label.config(fg="black", bg="black")
         self.gui.designed_by_label.config(fg="black", bg="black")
+        ScrollingTextWidget.flash_black(self.gui.scrolling_summary)
         self.gui.root.update()
         self.gui.root.after(250, self.display_flash_on)
 

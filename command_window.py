@@ -24,20 +24,20 @@ class CommandWindow:
         if not self.cmd_window or not self.cmd_window.winfo_exists():
             print("Main window has been destroyed!")
             return None
-        
+
         radar_button = tk.Button(
             self.cmd_window, text="Open radar (F2)",
             command=lambda event=None: radar_helper.open_radar(root_window=self.cmd_window, status_var=self.gui.status_var, event=event),
             bg="blue", fg="white", font=("VCR OSD Mono", 12)
         )
-        
+
         webserver_button = tk.Button(
             self.cmd_window, text="Open webserver (F4)",
             command=lambda: WebOpen.opener(self, port=2046),
             bg="blue", fg="white", font=("VCR OSD Mono", 12)
         )
         webserver_button.pack(pady=5)
-        
+
         if self.refresh_func:
             refresh_button = tk.Button(
                 self.cmd_window, text="Refresh Weather (F5)",
@@ -45,14 +45,14 @@ class CommandWindow:
                 bg="green", fg="yellow", font=("VCR OSD Mono", 12)
             )
             refresh_button.pack(pady=10)
-            
+
         open_command_window_button = tk.Button(
             self.cmd_window, text="Open Command Window (F6)",
             command=self.create_command_window,
             bg="green", fg="yellow", font=("VCR OSD Mono", 12)
         )
         open_command_window_button.pack(pady=10)
-            
+
         radar_button.pack(pady=5)
         if self.fullscreen_func:
             fullscreen_button = tk.Button(
