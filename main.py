@@ -45,6 +45,19 @@ class GUI:
         #             padx=10, pady=10, wraplength=750)
         # self.summary_label.pack()
 
+        self.link_var = tk.StringVar(value="")
+        if Config.get_config_bool(self, key="show_link"):
+            logging.info("Showing link")
+            self.link_label = tk.Label(
+                self.root, textvariable=self.link_var,
+                fg="cyan", bg="black",
+                font=("VCR OSD Mono", 10), justify="left",
+                padx=10, pady=10
+            )
+            self.link_label.pack()
+        else:
+            logging.info("Not showing link")
+
         self.current_warning_title_var = tk.StringVar(value="No warnings")
         self.current_warning_summary_var = tk.StringVar(value="No warnings in effect.")
         self.current_warning_title_label = tk.Label(
@@ -70,6 +83,13 @@ class GUI:
         )
         self.status_label.pack(side=tk.BOTTOM, pady=10)
 
+        self.designed_by_label = tk.Label(
+            self.root, text=DESIGNED_BY,
+            fg="cyan", bg="black",
+            font=("Courier", 10), justify="left"
+        )
+        self.designed_by_label.pack(side=tk.BOTTOM, pady=10, padx=10)
+
         self.timestamp_var = tk.StringVar()
         self.timestamp_label = tk.Label(
             self.root, textvariable=self.timestamp_var,
@@ -78,13 +98,6 @@ class GUI:
         )
         self.timestamp_label.pack(side=tk.BOTTOM, pady=10)
 
-        self.designed_by_label = tk.Label(
-            self.root, text=DESIGNED_BY,
-            fg="cyan", bg="black",
-            font=("Courier", 10), justify="left"
-        )
-        self.designed_by_label.pack(side=tk.BOTTOM, pady=10, padx=10)
-
         self.current_warning_summary.pack()
         self.root.bind("<F4>", lambda event=None: WebOpen.opener(self, port=2046))
         self.root.bind("<F6>", self.open_command_window)
@@ -92,10 +105,8 @@ class GUI:
         self.current_title = None
         self.current_summary = None
         self.current_link = None
-        # single instances to avoid rebinding events / recreating sessions
         self.fullscreen_manager = ScreenState(self)
         self.weather_fetcher = WeatherFetcher(self)
-        # start the recurring timestamp updates
         self.update_timestamp()
 
     def open_command_window(self, event=None):
@@ -193,7 +204,6 @@ class WeatherFetcher:
         self.current_title = "none"
         self.current_summary = "none"
         self.current_link = "none"
-        # Scroller widget is created by the GUI; keep a reference if needed
         self.scrolling_summary = None
         self.screen_state = ScreenState(gui)
         self.gui.root.bind("<F5>", lambda event=None: self.get_weather())
@@ -239,6 +249,7 @@ class WeatherFetcher:
                     self.gui.summary_var.set(self.current_summary)
                     self.gui.current_warning_title_var.set(self.warning_title)
                     self.gui.current_warning_summary_var.set(self.warning_summary)
+                    self.gui.link_var.set(self.current_link)
 
                     self.logger()
 
@@ -246,6 +257,7 @@ class WeatherFetcher:
                     if getattr(self.gui, 'scrolling_summary', None):
                         try:
                             self.gui.scrolling_summary.update_text(self.current_summary)
+                            self.gui.scrolling_summary.flash_black()
                         except Exception:
                             pass
         except Exception as e:
