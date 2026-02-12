@@ -2437,3 +2437,9 @@ Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
 Current warning: No watches or warnings in effect.
 Logged time: Current time is 2026-02-10 14:47:56
 --------------------------------------------------
+Current Conditions: Mostly Cloudy, -6.7°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 8:00 AM CST Thursday 12 February 2026 Condition: Mostly Cloudy Temperature: -6.7°C Pressure / Tendency: 102.0 kPa falling Visibility: 24 km Humidity: 96 % Wind Chill: -13 Dewpoint: -7.3°C Wind: S 18 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: Persons in or near this area should be on the lookout for adverse weather conditions and take necessary safety precautions. Issued: 8:17 AM CST Thursday 12 February 2026
+Logged time: Current time is 2026-02-12 09:05:50
+--------------------------------------------------

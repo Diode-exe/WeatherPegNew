@@ -12,6 +12,7 @@ import command_window
 from config import Config
 from scrolling_text_widget import ScrollingTextWidget
 import radar_helper
+from webserver_helper import WebServerHelper
 
 PROG = "WeatherPeg"
 DESIGNED_BY = "Designed by Diode-exe"
@@ -270,4 +271,11 @@ weather_fetcher = WeatherFetcher(gui_class)
 # Open the command window on startup
 gui_class.open_command_window()
 weather_fetcher.get_weather()
+webserver_helper = WebServerHelper(
+    current_title=weather_fetcher.current_title,
+    current_summary=weather_fetcher.current_summary,
+    warning_title=weather_fetcher.warning_title,
+    warning_summary=weather_fetcher.warning_summary
+)
+webserver_helper.start_webserver()
 gui_class.root.mainloop()

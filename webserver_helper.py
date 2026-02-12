@@ -62,5 +62,3 @@ class WebServerHelper:
             threading.Thread(target=run_server, daemon=True).start()
         else:
             logging.info("Not starting webserver")
-
-    start_webserver(self)
