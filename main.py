@@ -47,13 +47,13 @@ class GUI:
 
         self.current_warning_title_var = tk.StringVar(value="No warnings")
         self.current_warning_summary_var = tk.StringVar(value="No warnings in effect.")
-        self.current_warning_title = tk.Label(
+        self.current_warning_title_label = tk.Label(
                 self.root, textvariable=self.current_warning_title_var,
                 fg="lime", bg="black",
                 font=("VCR OSD Mono", 16, "bold"), justify="left",
                 padx=10, pady=10, wraplength=750
         )
-        self.current_warning_title.pack()
+        self.current_warning_title_label.pack()
 
         self.current_warning_summary = tk.Label(
             self.root, textvariable=self.current_warning_summary_var,
@@ -65,7 +65,7 @@ class GUI:
         self.status_var = tk.StringVar(value="")
         self.status_label = tk.Label(
             self.root, textvariable=self.status_var,
-            fg="yellow", bg="black",
+            fg="lime", bg="black",
             font=("Courier", 10)
         )
         self.status_label.pack(side=tk.BOTTOM, pady=10)
@@ -73,21 +73,21 @@ class GUI:
         self.timestamp_var = tk.StringVar()
         self.timestamp_label = tk.Label(
             self.root, textvariable=self.timestamp_var,
-            fg="yellow", bg="black",
+            fg="lime", bg="black",
             font=("Courier", 10)
         )
         self.timestamp_label.pack(side=tk.BOTTOM, pady=10)
 
-        designed_by_label = tk.Label(
+        self.designed_by_label = tk.Label(
             self.root, text=DESIGNED_BY,
             fg="cyan", bg="black",
             font=("Courier", 10), justify="left"
         )
-        designed_by_label.pack(side=tk.BOTTOM, pady=10, padx=10)
+        self.designed_by_label.pack(side=tk.BOTTOM, pady=10, padx=10)
 
         self.current_warning_summary.pack()
-        self.root.bind("<F6>", self.open_command_window)
         self.root.bind("<F4>", lambda event=None: WebOpen.opener(self, port=2046))
+        self.root.bind("<F6>", self.open_command_window)
         self.command_window = None
         self.current_title = None
         self.current_summary = None
@@ -122,13 +122,40 @@ class ScreenState():
         self.gui = gui
         self.root = gui.root
         self.fullscreen = False
-        self.root.bind("<F11>", self.toggle_fullscreen)
         self.root.bind("<F2>", lambda event=None: radar_helper.open_radar(root_window=self.root, status_var=self.gui.status_var, event=event))
+        self.root.bind("<F11>", self.toggle_fullscreen)
 
     def toggle_fullscreen(self, event=None):
         """Toggle fullscreen mode"""
         current_fullscreen = self.root.attributes("-fullscreen")
         self.root.attributes("-fullscreen", not current_fullscreen)
+
+    def display_flash_off(self):
+        """Make the screen flash off."""
+        def __init__(self, gui):
+            self.gui = gui
+
+        self.gui.title_label.config(fg="black", bg="black")
+        self.gui.current_warning_title_label.config(fg="black", bg="black")
+        self.gui.current_warning_summary.config(fg="black", bg="black")
+        self.gui.status_label.config(fg="black", bg="black")
+        self.gui.timestamp_label.config(fg="black", bg="black")
+        self.gui.designed_by_label.config(fg="black", bg="black")
+        self.gui.root.update()
+        self.gui.root.after(250, self.display_flash_on)
+
+    def display_flash_on(self):
+        """Make the screen flash on."""
+        def __init__(self, gui):
+            self.gui = gui
+
+        self.gui.title_label.config(fg="lime", bg="black")
+        self.gui.current_warning_title_label.config(fg="lime", bg="black")
+        self.gui.current_warning_summary.config(fg="lime", bg="black")
+        self.gui.status_label.config(fg="lime", bg="black")
+        self.gui.timestamp_label.config(fg="lime", bg="black")
+        self.gui.designed_by_label.config(fg="cyan", bg="black")
+        self.gui.root.update()
 
 class Networking:
     """Networking utilities with retry logic."""
@@ -167,6 +194,8 @@ class WeatherFetcher:
         self.current_link = "none"
         # Scroller widget is created by the GUI; keep a reference if needed
         self.scrolling_summary = None
+        self.screen_state = ScreenState(gui)
+        self.gui.root.bind("<F5>", lambda event=None: self.get_weather())
 
     def get_weather(self):
         """Fetch and process weather data from RSS feed."""
@@ -220,6 +249,8 @@ class WeatherFetcher:
                             pass
         except Exception as e:
             print(f"Error fetching weather data: {e}")
+        self.screen_state.display_flash_off()
+        self.gui.root.after(120000, self.get_weather)  # Refresh every 2 minutes
 
     def logger(self):
         """Log current weather data to a file if enabled in config."""
