@@ -2443,3 +2443,33 @@ Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
 Current warning: Persons in or near this area should be on the lookout for adverse weather conditions and take necessary safety precautions. Issued: 8:17 AM CST Thursday 12 February 2026
 Logged time: Current time is 2026-02-12 09:05:50
 --------------------------------------------------
+Current Conditions: Mainly Sunny, -6.7°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 AM CST Thursday 12 February 2026 Condition: Mainly Sunny Temperature: -6.7°C Pressure / Tendency: 102.0 kPa rising Visibility: 24 km Humidity: 96 % Wind Chill: -13 Dewpoint: -7.3°C Wind: S 16 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: Persons in or near this area should be on the lookout for adverse weather conditions and take necessary safety precautions. Issued: 9:10 AM CST Thursday 12 February 2026
+Logged time: Current time is 2026-02-12 09:22:25
+--------------------------------------------------
+Current Conditions: Mainly Sunny, -6.7°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 AM CST Thursday 12 February 2026 Condition: Mainly Sunny Temperature: -6.7°C Pressure / Tendency: 102.0 kPa rising Visibility: 24 km Humidity: 96 % Wind Chill: -13 Dewpoint: -7.3°C Wind: S 16 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: Persons in or near this area should be on the lookout for adverse weather conditions and take necessary safety precautions. Issued: 9:10 AM CST Thursday 12 February 2026
+Logged time: Current time is 2026-02-12 09:35:06
+--------------------------------------------------
+Current Conditions: Mainly Sunny, -6.7°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 AM CST Thursday 12 February 2026 Condition: Mainly Sunny Temperature: -6.7°C Pressure / Tendency: 102.0 kPa rising Visibility: 24 km Humidity: 96 % Wind Chill: -13 Dewpoint: -7.3°C Wind: S 16 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: Persons in or near this area should be on the lookout for adverse weather conditions and take necessary safety precautions. Issued: 9:10 AM CST Thursday 12 February 2026
+Logged time: Current time is 2026-02-12 09:35:52
+--------------------------------------------------
+Current Conditions: Mainly Sunny, -6.7°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 AM CST Thursday 12 February 2026 Condition: Mainly Sunny Temperature: -6.7°C Pressure / Tendency: 102.0 kPa rising Visibility: 24 km Humidity: 96 % Wind Chill: -13 Dewpoint: -7.3°C Wind: S 16 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: Persons in or near this area should be on the lookout for adverse weather conditions and take necessary safety precautions. Issued: 9:10 AM CST Thursday 12 February 2026
+Logged time: Current time is 2026-02-12 09:36:18
+--------------------------------------------------
+Current Conditions: Mainly Sunny, -6.7°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 9:00 AM CST Thursday 12 February 2026 Condition: Mainly Sunny Temperature: -6.7°C Pressure / Tendency: 102.0 kPa rising Visibility: 24 km Humidity: 96 % Wind Chill: -13 Dewpoint: -7.3°C Wind: S 16 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: Persons in or near this area should be on the lookout for adverse weather conditions and take necessary safety precautions. Issued: 9:10 AM CST Thursday 12 February 2026
+Logged time: Current time is 2026-02-12 09:37:39
+--------------------------------------------------

@@ -23,7 +23,9 @@ class WebServerHelper:
         self.warning_title = warning_title
         self.warning_summary = warning_summary
         self.port = port
-    @app.route("/weather")
+        app.add_url_rule("/weather", view_func=self.webweather)
+        app.add_url_rule("/shutdown", view_func=self.shutdown, methods=["GET", "POST"])
+
     def webweather(self, timestamp_var=None):
         """Flask route to display weather information."""
         logging.info("Flask route accessed!")
@@ -43,7 +45,6 @@ class WebServerHelper:
             last_updated=last_updated_value
         )
 
-    @app.route("/shutdown", methods=["GET", "POST"])
     def shutdown(self):
         """Flask route to shut down the server. Only accessible from localhost."""
         if request.remote_addr != "127.0.0.1":

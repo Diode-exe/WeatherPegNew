@@ -13,6 +13,7 @@ from config import Config
 from scrolling_text_widget import ScrollingTextWidget
 import radar_helper
 from webserver_helper import WebServerHelper
+from browser_helper import WebOpen
 
 PROG = "WeatherPeg"
 DESIGNED_BY = "Designed by Diode-exe"
@@ -86,6 +87,7 @@ class GUI:
 
         self.current_warning_summary.pack()
         self.root.bind("<F6>", self.open_command_window)
+        self.root.bind("<F4>", lambda event=None: WebOpen.opener(self, port=2046))
         self.command_window = None
         self.current_title = None
         self.current_summary = None

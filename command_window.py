@@ -1,6 +1,7 @@
 import tkinter as tk
 
 import radar_helper
+from browser_helper import WebOpen
 
 class CommandWindow:
     """Class to create and manage the command window"""
@@ -38,3 +39,9 @@ class CommandWindow:
                 bg="blue", fg="white", font=("VCR OSD Mono", 12)
             )
             radar_button.pack(pady=5)
+        webserver_button = tk.Button(
+            self.cmd_window, text="Open webserver (F4)",
+            command=lambda: WebOpen.opener(self, port=2046),
+            bg="blue", fg="white", font=("VCR OSD Mono", 12)
+        )
+        webserver_button.pack(pady=5)
