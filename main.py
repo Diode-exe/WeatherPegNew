@@ -74,6 +74,7 @@ class GUI:
             font=("VCR OSD Mono", 16, "bold"), justify="left",
             padx=10, pady=10, wraplength=750
         )
+        self.current_warning_summary.pack()
 
         self.status_var = tk.StringVar(value="")
         self.status_label = tk.Label(
@@ -98,7 +99,6 @@ class GUI:
         )
         self.timestamp_label.pack(side=tk.BOTTOM, pady=10)
 
-        self.current_warning_summary.pack()
         self.root.bind("<F4>", lambda event=None: WebOpen.opener(self, port=2046))
         self.root.bind("<F6>", self.open_command_window)
         self.command_window = None
