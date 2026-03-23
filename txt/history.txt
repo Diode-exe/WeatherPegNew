@@ -2659,3 +2659,21 @@ Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
 Current warning: No watches or warnings in effect.
 Logged time: Current time is 2026-02-12 12:43:48
 --------------------------------------------------
+Current Conditions: Mostly Cloudy, 1.0°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 11:00 AM CDT Monday 23 March 2026 Condition: Mostly Cloudy Temperature: 1.0°C Pressure / Tendency: 102.3 kPa falling Visibility: 24 km Humidity: 75 % Dewpoint: -3.0°C Wind: S 32 km/h gust 49 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2026-03-23 12:26:45
+--------------------------------------------------
+Current Conditions: Mostly Cloudy, 1.0°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 11:00 AM CDT Monday 23 March 2026 Condition: Mostly Cloudy Temperature: 1.0°C Pressure / Tendency: 102.3 kPa falling Visibility: 24 km Humidity: 75 % Dewpoint: -3.0°C Wind: S 32 km/h gust 49 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2026-03-23 12:29:11
+--------------------------------------------------
+Current Conditions: Cloudy, 1.8°C
+Summary: Observed at: Winnipeg Richardson Int'l Airport 1:00 PM CDT Monday 23 March 2026 Condition: Cloudy Temperature: 1.8°C Pressure / Tendency: 102.1 kPa falling Visibility: 24 km Humidity: 69 % Dewpoint: -3.3°C Wind: S 37 km/h gust 55 km/h Air Quality Health Index: 2
+Coords/Link: https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135
+Current warning: No watches or warnings in effect.
+Logged time: Current time is 2026-03-23 13:27:11
+--------------------------------------------------

@@ -18,6 +18,8 @@ from browser_helper import WebOpen
 PROG = "WeatherPeg"
 DESIGNED_BY = "Designed by Diode-exe"
 
+config_class = Config()
+
 class GUI:
     """Graphical User Interface setup."""
     def __init__(self):
@@ -34,7 +36,7 @@ class GUI:
         # optional scrolling summary (placed under title)
         self.scrolling_summary = None
         try:
-            if Config.get_config_bool(self, key="show_scroller"):
+            if config_class.get_config_bool(key="show_scroller"):
                 self.scrolling_summary = ScrollingTextWidget(self.root, "Loading weather data...", width=80, speed=150)
         except Exception:
             self.scrolling_summary = None
@@ -46,7 +48,7 @@ class GUI:
         # self.summary_label.pack()
 
         self.link_var = tk.StringVar(value="")
-        if Config.get_config_bool(self, key="show_link"):
+        if config_class.get_config_bool(key="show_link"):
             logging.info("Showing link")
             self.link_label = tk.Label(
                 self.root, textvariable=self.link_var,
@@ -106,7 +108,7 @@ class GUI:
         self.current_summary = None
         self.current_link = None
         self.fullscreen_manager = ScreenState(self)
-        self.weather_fetcher = WeatherFetcher(self)
+        self.weather_fetcher = WeatherFetcher(self, networking)
         self.update_timestamp()
 
     def open_command_window(self, event=None):
@@ -143,9 +145,6 @@ class ScreenState():
 
     def display_flash_off(self):
         """Make the screen flash off."""
-        def __init__(self, gui):
-            self.gui = gui
-
         self.gui.title_label.config(fg="black", bg="black")
         self.gui.current_warning_title_label.config(fg="black", bg="black")
         self.gui.current_warning_summary.config(fg="black", bg="black")
@@ -158,9 +157,6 @@ class ScreenState():
 
     def display_flash_on(self):
         """Make the screen flash on."""
-        def __init__(self, gui):
-            self.gui = gui
-
         self.gui.title_label.config(fg="lime", bg="black")
         self.gui.current_warning_title_label.config(fg="lime", bg="black")
         self.gui.current_warning_summary.config(fg="lime", bg="black")
@@ -194,11 +190,12 @@ class Networking:
         timeout = kwargs.pop("timeout", 10)
         return self._HTTP_SESSION.get(url, timeout=timeout, **kwargs)
 
+
 class WeatherFetcher:
     """Fetch and process weather data from RSS feed."""
-    def __init__(self, gui):
+    def __init__(self, gui, networking_ref):
         self.gui = gui
-        self.networking = Networking()
+        self.networking = networking_ref
         self.warning_title = "No warnings"
         self.warning_summary = "No warnings in effect."
         self.current_title = "none"
@@ -267,7 +264,7 @@ class WeatherFetcher:
 
     def logger(self):
         """Log current weather data to a file if enabled in config."""
-        if Config.get_config_bool(self, key="write_log"):
+        if config_class.get_config_bool(key="write_log"):
             filename = "txt/history.txt"
             logged_time = self.gui.timestamp_var.get()
             # Ensure directory exists
@@ -311,9 +308,11 @@ class WeatherFetcher:
                 f.write(chunk)
                 logging.info(f"Download complete! Saved as {new_filename}")
 
+networking = Networking()
+
 gui_class = GUI()
 fullscreen_manager = ScreenState(gui_class)
-weather_fetcher = WeatherFetcher(gui_class)
+weather_fetcher = WeatherFetcher(gui_class, networking)
 # Open the command window on startup
 gui_class.open_command_window()
 weather_fetcher.get_weather()
