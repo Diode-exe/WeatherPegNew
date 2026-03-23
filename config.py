@@ -58,6 +58,6 @@ class Config():
             logging.error(f"File {configfilename} not found")
             return default
         return default
-    
+
 if __name__ == "__main__":
     print("This is a module, and not meant to be run directly")
