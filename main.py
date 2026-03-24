@@ -212,6 +212,7 @@ class WeatherFetcher:
         self.scrolling_summary = None
         self.screen_state = screen_state_ref
         self.gui.root.bind("<F5>", lambda event=None: self.get_weather())
+        self.did_not_exist = False
 
     def get_weather(self):
         """Fetch and process weather data from RSS feed."""
@@ -287,7 +288,7 @@ class WeatherFetcher:
             if os.path.exists(filename):
                 logging.info(f"Found {filename}")
             else:
-                logging.info(f"Could not find {filename}, but created it")
+                self.did_not_exist = True
             with open(filename, "a", encoding="utf-8") as f:
                 f.write(f"{self.current_title}\n")
                 f.write(f"Summary: {self.current_summary}\n")
@@ -295,6 +296,8 @@ class WeatherFetcher:
                 f.write(f"Current warning: {self.warning_summary}\n")
                 f.write(f"Logged time: {logged_time}\n")
                 f.write("-" * 50 + "\n")
+            if self.did_not_exist:
+                logging.info(f"Could not find {filename}, but created it")
             logging.info(f"Logged current weather to {filename}")
             self.dlhistory()
         else:
