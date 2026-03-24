@@ -23,7 +23,9 @@
 
 3. Update the txt/source.txt file with the link to the RSS feed for weather. Example: Navigating to ```https://weather.gc.ca/en/location/index.html?coords=49.895,-97.135``` and scrolling down to the RSS feed icon, click that and copy the URL and paste it into the txt/source.txt file. Example (and default): ```https://weather.gc.ca/rss/weather/49.895_-97.135_e.xml```
 
-4. Run the application:
+4. Install font from [VCR OSD Mono](https://www.dafont.com/vcr-osd-mono.font) for best results. You can also use any other font, but the layout may not look as intended.
+
+5. Run the application:
 
    ```bash
    #!/bin/bash
