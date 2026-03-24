@@ -167,9 +167,6 @@ class ScreenState():
 
 class Networking:
     """Networking utilities with retry logic."""
-    def __init__(self):
-        self._http_session = self._create_http_session()
-
     def _create_http_session(self):
         session = requests.Session()
         retry = Retry(
@@ -186,11 +183,12 @@ class Networking:
         session.mount("https://", adapter)
         return session
 
+    _HTTP_SESSION = _create_http_session(self=None)
 
     def http_get(self, url, **kwargs):
         """Perform an HTTP GET request with retries and timeout."""
         timeout = kwargs.pop("timeout", 10)
-        return self._http_session.get(url, timeout=timeout, **kwargs)
+        return self._HTTP_SESSION.get(url, timeout=timeout, **kwargs)
 
 
 class WeatherFetcher:
