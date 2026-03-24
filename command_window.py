@@ -2,6 +2,7 @@ import tkinter as tk
 
 import radar_helper
 from browser_helper import WebOpen
+from config import Config
 
 class CommandWindow:
     """Class to create and manage the command window"""
@@ -10,11 +11,13 @@ class CommandWindow:
         self.refresh_func = refresh_func
         self.status_var = status_var
         self.gui = gui
+        self.config = Config()
+        self.port = self.config.get_config_port()
         self.cmd_window = tk.Toplevel(root_window)
         self.cmd_window.title("WeatherPeg Commands")
         self.cmd_window.geometry("")
         self.cmd_window.bind("<F2>", lambda event=None: radar_helper.open_radar(root_window=self.cmd_window, status_var=self.gui.status_var, event=event))
-        self.cmd_window.bind("<F4>", lambda event=None: WebOpen.opener(self, port=2046))
+        self.cmd_window.bind("<F4>", lambda event=None: WebOpen.opener(self, port=self.port))
         self.cmd_window.bind("<F5>", lambda event=None: self.refresh_func())
         self.cmd_window.bind("<F6>", self.create_command_window)
         self.cmd_window.bind("<F11>", self.fullscreen_func)
@@ -33,7 +36,7 @@ class CommandWindow:
 
         webserver_button = tk.Button(
             self.cmd_window, text="Open webserver (F4)",
-            command=lambda: WebOpen.opener(self, port=2046),
+            command=lambda: WebOpen.opener(self, port=self.port),
             bg="blue", fg="white", font=("VCR OSD Mono", 12)
         )
         webserver_button.pack(pady=5)

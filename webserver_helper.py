@@ -27,14 +27,11 @@ class WebServerHelper:
         app.add_url_rule("/shutdown", view_func=self.shutdown, methods=["GET", "POST"])
         self.config = Config()
 
-    def webweather(self, timestamp_var=None):
+    def webweather(self):
         """Flask route to display weather information."""
         logging.info("Flask route accessed!")
         css_url = url_for('static', filename='styles.css')
-        try:
-            last_updated_value = timestamp_var.get()
-        except Exception:
-            last_updated_value = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        last_updated_value = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         return render_template(
             "weather.html",
