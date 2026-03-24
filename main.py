@@ -33,6 +33,13 @@ class GUI:
                             padx=10, pady=10, wraplength=750)
         self.title_label.pack()
 
+        web_open = WebOpen()
+
+        self.port = config_class.get_config_port()
+        if self.port is None:
+            logging.warning("Port not configured properly. Defaulting to 2046.")
+            self.port = 2046
+
         # optional scrolling summary (placed under title)
         self.scrolling_summary = None
         try:
@@ -101,7 +108,7 @@ class GUI:
         )
         self.timestamp_label.pack(side=tk.BOTTOM, pady=10)
 
-        self.root.bind("<F4>", lambda event=None: WebOpen.opener(self, port=2046))
+        self.root.bind("<F4>", lambda event=None: web_open.opener(port=self.port))
         self.root.bind("<F6>", self.open_command_window)
         self.command_window = None
         self.current_title = None
