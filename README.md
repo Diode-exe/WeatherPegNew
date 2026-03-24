@@ -35,6 +35,7 @@
 - Displays current weather conditions, forecasts, and warnings.
 - Runs webserver to provide weather data via a REST API.
 - Optional scrolling summary for detailed weather information.
+- Linux and Windows support.
 
 ### Common problems
 
