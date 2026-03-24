@@ -13,7 +13,7 @@ class CommandWindow:
         self.status_var = status_var
         self.gui = gui
         self.config = Config()
-        self.port = self.config.get_config_port()
+        self.port = self.config.port
         self.cmd_window = tk.Toplevel(root_window)
         self.cmd_window.title("WeatherPeg Commands")
         self.cmd_window.geometry("")

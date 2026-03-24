@@ -36,7 +36,7 @@ class GUI:
 
         web_open = WebOpen()
 
-        self.port = config_class.get_config_port()
+        self.port = config_class.port
         if self.port is None:
             logging.warning("Port not configured properly. Defaulting to 2046.")
             self.port = 2046
@@ -44,7 +44,7 @@ class GUI:
         # optional scrolling summary (placed under title)
         self.scrolling_summary = None
         try:
-            if config_class.get_config_bool(key="show_scroller"):
+            if config_class.show_scroller:
                 self.scrolling_summary = ScrollingTextWidget(self.root, "Loading weather data...", width=80, speed=150)
         except Exception:
             self.scrolling_summary = None
@@ -56,7 +56,7 @@ class GUI:
         # self.summary_label.pack()
 
         self.link_var = tk.StringVar(value="")
-        if config_class.get_config_bool(key="show_link"):
+        if config_class.show_link:
             logging.info("Showing link")
             self.link_label = tk.Label(
                 self.root, textvariable=self.link_var,
@@ -281,7 +281,7 @@ class WeatherFetcher:
 
     def logger(self):
         """Log current weather data to a file if enabled in config."""
-        if config_class.get_config_bool(key="write_log"):
+        if config_class.write_log:
             filename = "txt/history.txt"
             logged_time = self.gui.timestamp_var.get()
             # Ensure directory exists

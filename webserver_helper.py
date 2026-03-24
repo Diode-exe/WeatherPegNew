@@ -22,7 +22,8 @@ class WebServerHelper:
         self.current_summary = current_summary
         self.warning_title = warning_title
         self.warning_summary = warning_summary
-        self.port = port
+        self.config = Config()
+        self.port = self.config.port
         app.add_url_rule("/weather", view_func=self.webweather)
         app.add_url_rule("/shutdown", view_func=self.shutdown, methods=["GET", "POST"])
         self.config = Config()
@@ -55,7 +56,7 @@ class WebServerHelper:
 
     def start_webserver(self):
         """Start the Flask web server in a separate thread."""
-        if self.config.get_config_bool(key="webserver"):
+        if self.config.webserver:
             def run_server():
                 socketio.run(app, host="0.0.0.0", port=self.port, debug=False, use_reloader=False)
             threading.Thread(target=run_server, daemon=True).start()
