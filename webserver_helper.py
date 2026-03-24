@@ -25,6 +25,7 @@ class WebServerHelper:
         self.port = port
         app.add_url_rule("/weather", view_func=self.webweather)
         app.add_url_rule("/shutdown", view_func=self.shutdown, methods=["GET", "POST"])
+        self.config = Config()
 
     def webweather(self, timestamp_var=None):
         """Flask route to display weather information."""
@@ -57,9 +58,9 @@ class WebServerHelper:
 
     def start_webserver(self):
         """Start the Flask web server in a separate thread."""
-        if Config.get_config_bool(self, key="webserver"):
+        if self.config.get_config_bool(key="webserver"):
             def run_server():
-                app.run(host="0.0.0.0", port=self.port, debug=False, use_reloader=False)
+                socketio.run(app, host="0.0.0.0", port=self.port, debug=False, use_reloader=False)
             threading.Thread(target=run_server, daemon=True).start()
         else:
             logging.info("Not starting webserver")
