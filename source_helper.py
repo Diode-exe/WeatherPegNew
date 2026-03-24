@@ -4,8 +4,8 @@ try:
         RSS_URL = RSS.read().strip()
 except FileNotFoundError:
     print(f"[WARN] {SOURCE} not found!")
-    print("You need a file called source.txt with a URL pointing towards an XML file so the software knows")
-    print("where to get the information from!!")
+    print("You need a file called source.txt with a URL pointing towards an"
+          "XML file so the software knows where to get the information from!!")
     input("Press Enter to continue...")
 
 COORD_SOURCE = "txt/coord_source.txt"

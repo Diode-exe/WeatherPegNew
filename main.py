@@ -108,7 +108,7 @@ class GUI:
         self.current_summary = None
         self.current_link = None
         self.fullscreen_manager = ScreenState(self)
-        self.weather_fetcher = WeatherFetcher(self, networking)
+        self.weather_fetcher = WeatherFetcher(self, networking, self.fullscreen_manager)
         self.update_timestamp()
 
     def open_command_window(self, event=None):
@@ -194,7 +194,7 @@ class Networking:
 
 class WeatherFetcher:
     """Fetch and process weather data from RSS feed."""
-    def __init__(self, gui, networking_ref):
+    def __init__(self, gui, networking_ref, screen_state_ref):
         self.gui = gui
         self.networking = networking_ref
         self.warning_title = "No warnings"
@@ -203,7 +203,7 @@ class WeatherFetcher:
         self.current_summary = "none"
         self.current_link = "none"
         self.scrolling_summary = None
-        self.screen_state = ScreenState(gui)
+        self.screen_state = screen_state_ref
         self.gui.root.bind("<F5>", lambda event=None: self.get_weather())
 
     def get_weather(self):
@@ -312,16 +312,14 @@ class WeatherFetcher:
 networking = Networking()
 
 gui_class = GUI()
-fullscreen_manager = ScreenState(gui_class)
-weather_fetcher = WeatherFetcher(gui_class, networking)
 # Open the command window on startup
 gui_class.open_command_window()
-weather_fetcher.get_weather()
+gui_class.weather_fetcher.get_weather()
 webserver_helper = WebServerHelper(
-    current_title=weather_fetcher.current_title,
-    current_summary=weather_fetcher.current_summary,
-    warning_title=weather_fetcher.warning_title,
-    warning_summary=weather_fetcher.warning_summary
+    current_title=gui_class.weather_fetcher.current_title,
+    current_summary=gui_class.weather_fetcher.current_summary,
+    warning_title=gui_class.weather_fetcher.warning_title,
+    warning_summary=gui_class.weather_fetcher.warning_summary
 )
 webserver_helper.start_webserver()
 gui_class.root.mainloop()
