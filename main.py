@@ -1,5 +1,6 @@
 import tkinter as tk
 import logging
+from logging import StreamHandler, Formatter, getLogger
 import html
 import os
 import re
@@ -15,6 +16,14 @@ import radar_helper
 from webserver_helper import WebServerHelper
 from browser_helper import WebOpen
 import webserver_helper as _ws
+
+root_logger = getLogger()
+if not root_logger.handlers:
+    root_logger.setLevel(logging.DEBUG)
+    ch = StreamHandler()
+    ch.setLevel(logging.DEBUG)
+    ch.setFormatter(Formatter("%(asctime)s %(levelname)s: %(message)s"))
+    root_logger.addHandler(ch)
 
 PROG = "WeatherPeg"
 DESIGNED_BY = "Designed by Diode-exe"
