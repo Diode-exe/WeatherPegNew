@@ -33,7 +33,8 @@
 ### Features
 
 - Displays current weather conditions, forecasts, and warnings.
-- Configurable GUI with options for full-screen mode, windowed mode, and customizable colors.
+- Runs webserver to provide weather data via a REST API.
+- Optional scrolling summary for detailed weather information.
 
 ### Common problems
 
