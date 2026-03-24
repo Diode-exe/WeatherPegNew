@@ -222,6 +222,7 @@ class WeatherFetcher:
             # print("DEBUG: entry categories:", [getattr(e, 'category', None) for e in feed.entries])
 
             for entry in feed.entries:
+
                 if entry.category == "Warnings and Watches":
                     if not entry.summary == "No watches or warnings in effect.":
                         self.warning_summary = entry.summary
@@ -229,25 +230,31 @@ class WeatherFetcher:
                         self.warning_summary = "No watches or warnings in effect."
                     self.warning_title = entry.title
 
-            for entry in feed.entries:
                 if entry.category == "Current Conditions":
-                    self.current_title = entry.title
-                    self.current_link = entry.link
+                    try:
+                        self.current_title = entry.title
+                        self.current_link = entry.link
 
-                    # Decode HTML entities and clean text
-                    self.current_summary = html.unescape(entry.summary)
-                    self.current_summary = re.sub(r'<[^>]+>', '', self.current_summary)
+                        # Decode HTML entities and clean text
+                        self.current_summary = html.unescape(entry.summary)
+                        self.current_summary = re.sub(r'<[^>]+>', '', self.current_summary)
 
-                    print("Current Conditions Updated:")
-                    print("Entry title:", self.current_title)
-                    print("Entry summary:", self.current_summary)
-                    print("Entry link:", self.current_link)
-                    print("-" * 50)
-                    self.gui.title_var.set(self.current_title)
-                    self.gui.summary_var.set(self.current_summary)
-                    self.gui.current_warning_title_var.set(self.warning_title)
-                    self.gui.current_warning_summary_var.set(self.warning_summary)
-                    self.gui.link_var.set(self.current_link)
+                        print("Current Conditions Updated:")
+                        print("Entry title:", self.current_title)
+                        print("Entry summary:", self.current_summary)
+                        print("Entry link:", self.current_link)
+                        print("-" * 50)
+                        self.gui.title_var.set(self.current_title)
+                        self.gui.summary_var.set(self.current_summary)
+                        self.gui.current_warning_title_var.set(self.warning_title)
+                        self.gui.current_warning_summary_var.set(self.warning_summary)
+                        self.gui.link_var.set(self.current_link)
+
+                    except AttributeError as e:
+                        logging.warning(f"Missing expected feed entry attribute: {e}")
+                    except Exception as e:
+                        logging.warning(f"Error processing feed entry: {e}")
+                        continue
 
                     self.logger()
 
@@ -256,10 +263,10 @@ class WeatherFetcher:
                         try:
                             self.gui.scrolling_summary.update_text(self.current_summary)
                             self.gui.scrolling_summary.flash_black()
-                        except Exception:
-                            pass
+                        except Exception as e:
+                            logging.warning(f"Error updating scrolling summary: {e}")
         except Exception as e:
-            print(f"Error fetching weather data: {e}")
+            logging.warning(f"Error fetching weather data: {e}")
         self.screen_state.display_flash_off()
         self.gui.root.after(120000, self.get_weather)  # Refresh every 2 minutes
 
