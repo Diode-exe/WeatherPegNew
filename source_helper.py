@@ -1,12 +1,13 @@
+import logging
+
 SOURCE = "txt/source.txt"
 try:
     with open(SOURCE, "r", encoding="utf-8") as RSS:
         RSS_URL = RSS.read().strip()
 except FileNotFoundError:
-    print(f"[WARN] {SOURCE} not found!")
-    print("You need a file called source.txt with a URL pointing towards an"
-          "XML file so the software knows where to get the information from!!")
-    input("Press Enter to continue...")
+    logging.warning(f"{SOURCE} not found!")
+    logging.warning("You need a file called source.txt with a URL pointing towards an"
+                    "XML file so the software knows where to get the information from!!")
 
 COORD_SOURCE = "txt/coord_source.txt"
 
@@ -18,13 +19,11 @@ try:
         lat_str, lon_str = line.split(",")
         COORDINATES = (float(lat_str), float(lon_str))  # tuple of floats
 except FileNotFoundError:
-    print(f"[WARN] {COORD_SOURCE} not found!")
-    print("You need a file called coord_source.txt with coords in it so the radar has a location")
-    input("Press Enter to continue...")
+    logging.warning(f"{COORD_SOURCE} not found!")
+    logging.warning("You need a file called coord_source.txt with coords in it so the radar has a location")
     COORDINATES = None
 except ValueError as e:
-    print(f"[WARN] {COORD_SOURCE} is invalid: {e}")
-    input("Press Enter to continue...")
+    logging.warning(f"{COORD_SOURCE} is invalid: {e}")
     COORDINATES = None
 
-print("Coordinates:", COORDINATES)
+logging.info(f"Coordinates: {COORDINATES}")
