@@ -60,4 +60,4 @@ class Config():
         return default
 
 if __name__ == "__main__":
-    print("This is a module, and not meant to be run directly")
+    logging.warning("This is a module, and not meant to be run directly")

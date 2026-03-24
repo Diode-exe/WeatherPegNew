@@ -158,7 +158,8 @@ class ScreenState():
         self.gui.status_label.config(fg="black", bg="black")
         self.gui.timestamp_label.config(fg="black", bg="black")
         self.gui.designed_by_label.config(fg="black", bg="black")
-        ScrollingTextWidget.flash_black(self.gui.scrolling_summary)
+        if getattr(self.gui, 'scrolling_summary', None):
+            ScrollingTextWidget.flash_black(self.gui.scrolling_summary)
         self.gui.root.update()
         self.gui.root.after(250, self.display_flash_on)
 
@@ -218,16 +219,8 @@ class WeatherFetcher:
         """Fetch and process weather data from RSS feed."""
         try:
             response = self.networking.http_get(url=source_helper.RSS_URL)
-            # print(f"DEBUG: HTTP {getattr(response, 'status_code', '<no-status>')} {getattr(response, 'url', '<no-url>')}")
-            # try:
-            #     snippet = response.content[:200].decode('utf-8', errors='replace')
-            # except Exception:
-            #     snippet = repr(response.content[:200])
-            # print("DEBUG: response content snippet:\n", snippet)
 
             feed = feedparser.parse(response.content)
-            # print(f"DEBUG: parsed feed, entries={len(feed.entries)}")
-            # print("DEBUG: entry categories:", [getattr(e, 'category', None) for e in feed.entries])
 
             for entry in feed.entries:
 
@@ -324,7 +317,7 @@ class WeatherFetcher:
         with open(new_filename, "wb") as f:
             for chunk in response.iter_content(chunk_size=8192):
                 f.write(chunk)
-                logging.info(f"Download complete! Saved as {new_filename}")
+            logging.info(f"Download complete! Saved as {new_filename}")
 
 networking = Networking()
 

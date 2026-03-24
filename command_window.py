@@ -1,3 +1,4 @@
+import logging
 import tkinter as tk
 
 import radar_helper
@@ -25,7 +26,7 @@ class CommandWindow:
     def create_command_window(self, event=None):
         """Create the main command window with buttons"""
         if not self.cmd_window or not self.cmd_window.winfo_exists():
-            print("Main window has been destroyed!")
+            logging.warning("Main window has been destroyed!")
             return None
 
         radar_button = tk.Button(
