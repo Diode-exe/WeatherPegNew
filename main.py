@@ -14,6 +14,7 @@ from scrolling_text_widget import ScrollingTextWidget
 import radar_helper
 from webserver_helper import WebServerHelper
 from browser_helper import WebOpen
+import webserver_helper as _ws
 
 PROG = "WeatherPeg"
 DESIGNED_BY = "Designed by Diode-exe"
@@ -250,6 +251,13 @@ class WeatherFetcher:
                         self.gui.current_warning_title_var.set(self.warning_title)
                         self.gui.current_warning_summary_var.set(self.warning_summary)
                         self.gui.link_var.set(self.current_link)
+
+                        try:
+                            if hasattr(_ws, "socketio") and _ws.socketio:
+                                _ws.socketio.emit("weather_updated")
+                                logging.debug("Emitted SocketIO weather_updated event")
+                        except Exception:
+                            logging.debug("Could not emit SocketIO update (webserver may not be running)")
 
                     except AttributeError as e:
                         logging.warning(f"Missing expected feed entry attribute: {e}")
