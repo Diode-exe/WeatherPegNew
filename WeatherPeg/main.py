@@ -35,16 +35,13 @@ if not root_logger.handlers:
     ch.setFormatter(Formatter("%(asctime)s %(levelname)s: %(message)s"))
     root_logger.addHandler(ch)
 
-PROG = "WeatherPeg"
-DESIGNED_BY = "Designed by Diode-exe"
-
-config_class = Config()
-
 class GUI:
     """Graphical User Interface setup."""
     def __init__(self):
+        self.prog = "WeatherPeg"
+        self.designed_by = "Designed by Diode-exe"
         self.root = tk.Tk()
-        self.root.title(PROG)
+        self.root.title(self.prog)
         self.root.configure(bg="black")
         self.root.geometry("800x600")
         self.title_var = tk.StringVar(value="Loading weather data...")
@@ -114,7 +111,7 @@ class GUI:
         self.status_label.pack(side=tk.BOTTOM, pady=10)
 
         self.designed_by_label = tk.Label(
-            self.root, text=DESIGNED_BY,
+            self.root, text=self.designed_by,
             fg="cyan", bg="black",
             font=("Courier", 10), justify="left"
         )
@@ -345,6 +342,8 @@ class WeatherFetcher:
             for chunk in response.iter_content(chunk_size=8192):
                 f.write(chunk)
             logging.info(f"Download complete! Saved as {new_filename}")
+
+config_class = Config()
 
 networking = Networking()
 
