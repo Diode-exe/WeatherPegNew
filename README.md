@@ -2,7 +2,7 @@
 
 ## Broadcast friendly weather software
 
-![screenshot of full mode of WeatherPeg](images/image0.png)
+![screenshot of full mode of WeatherPeg](ghimg/image0.png)
 
 ### Prerequisites
 
