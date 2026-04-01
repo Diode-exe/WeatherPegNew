@@ -4,10 +4,10 @@ import threading
 import logging
 from env_canada import ECRadar
 from PIL import Image
-# try:
-from . import source_helper
-# except ImportError:
-#     import source_helper
+try:
+    from . import source_helper
+except ImportError:
+    import source_helper
 
 
 async def fetch_radar(root_window=None, status_var=None):

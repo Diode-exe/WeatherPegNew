@@ -8,24 +8,24 @@ import datetime
 import requests
 from requests.adapters import HTTPAdapter, Retry
 import feedparser
-# try:
-from . import source_helper
-from . import command_window
-from .config import Config
-from .scrolling_text_widget import ScrollingTextWidget
-from . import radar_helper
-from .webserver_helper import WebServerHelper
-from .browser_helper import WebOpen
-from . import webserver_helper as _ws
-# except ImportError:
-#     import source_helper
-#     import command_window
-#     from config import Config
-#     from scrolling_text_widget import ScrollingTextWidget
-#     import radar_helper
-#     from webserver_helper import WebServerHelper
-#     from browser_helper import WebOpen
-#     import webserver_helper as _ws
+try:
+    from . import source_helper
+    from . import command_window
+    from .config import Config
+    from .scrolling_text_widget import ScrollingTextWidget
+    from . import radar_helper
+    from .webserver_helper import WebServerHelper
+    from .browser_helper import WebOpen
+    from . import webserver_helper as _ws
+except ImportError:
+    import source_helper
+    import command_window
+    from config import Config
+    from scrolling_text_widget import ScrollingTextWidget
+    import radar_helper
+    from webserver_helper import WebServerHelper
+    from browser_helper import WebOpen
+    import webserver_helper as _ws
 
 root_logger = getLogger()
 if not root_logger.handlers:

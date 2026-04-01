@@ -5,10 +5,10 @@ import logging
 import signal
 from flask import Flask, url_for, request, render_template
 from flask_socketio import SocketIO
-# try:
-from .config import Config
-# except ImportError:
-    # from config import Config
+try:
+    from .config import Config
+except ImportError:
+    from config import Config
 
 TEMPLATE_FOLDER = "templates"
 STATIC_FOLDER = "static"
