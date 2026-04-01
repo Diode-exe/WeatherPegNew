@@ -135,6 +135,8 @@ class GUI:
 
         self.root.bind("<F4>", lambda event=None: web_open.opener(port=self.port))
         self.root.bind("<F6>", self.open_command_window)
+        # self.root.bind("<F9>", lambda event=None: self.nfh.send_notification("Weather Warning", "WeatherPeg has detected a weather warning! "
+        #                                                "Check the display or webserver for details."))
         self.command_window = None
         self.current_title = None
         self.current_summary = None
@@ -255,6 +257,10 @@ class WeatherFetcher:
                     if entry.summary == "No watches or warnings in effect.":
                         self.warning_summary = "No watches or warnings in effect."
                     self.warning_title = entry.title
+                    
+                    if not "No watches" in entry.summary:
+                        self.gui.nfh.send_notification("Weather Warning", "WeatherPeg has detected a weather warning! "
+                                                       "Check the display or webserver for details.")
 
                 if entry.category == "Current Conditions":
                     try:
