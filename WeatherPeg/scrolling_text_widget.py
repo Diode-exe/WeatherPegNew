@@ -21,7 +21,7 @@ class ScrollingTextWidget:
     - Thread-safe GUI updates
     """
 
-    def __init__(self, parent, text: str = "", width: int = 80, speed: int = 150):
+    def __init__(self, parent, text: str = "", width: int = 80, speed: int = 150, bg_color_ref="black", fg_color_ref="lime"):
         """
         Initialize the scrolling text widget.
 
@@ -35,13 +35,15 @@ class ScrollingTextWidget:
         self.width = width
         self.speed = speed
         self.original_text = text
+        self.bg_color = bg_color_ref
+        self.fg_color = fg_color_ref
 
         # Create the label widget
         self.label = tk.Label(
             parent,
             text="",
-            fg="lime",
-            bg="black",
+            fg=self.fg_color,
+            bg=self.bg_color,
             font=("VCR OSD Mono", 12),
             justify="left",
             padx=10,
@@ -117,7 +119,7 @@ class ScrollingTextWidget:
         Flash the text black for refresh indication.
         """
         self.label.config(fg="black")
-        self.parent.after(750, lambda: self.label.config(fg="lime"))
+        self.parent.after(750, lambda: self.label.config(fg=self.fg_color))
 
     def stop_scrolling(self) -> None:
         """

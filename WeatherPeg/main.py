@@ -8,6 +8,8 @@ import datetime
 import requests
 from requests.adapters import HTTPAdapter, Retry
 import feedparser
+# this is a bit of a hack so you can run from the main.py file without worrying about relative imports,
+# but also run from __main__.py without worrying about absolute imports
 try:
     from . import source_helper
     from . import command_window
@@ -37,15 +39,17 @@ if not root_logger.handlers:
 
 class GUI:
     """Graphical User Interface setup."""
-    def __init__(self):
+    def __init__(self, bg_color_ref="black", fg_color_ref="lime"):
+        self.bg_color = bg_color_ref
+        self.fg_color = fg_color_ref
         self.prog = "WeatherPeg"
         self.designed_by = "Designed by Diode-exe"
         self.root = tk.Tk()
         self.root.title(self.prog)
-        self.root.configure(bg="black")
+        self.root.configure(bg=self.bg_color)
         self.root.geometry("800x600")
         self.title_var = tk.StringVar(value="Loading weather data...")
-        self.title_label = tk.Label(self.root, textvariable=self.title_var, fg="lime", bg="black",
+        self.title_label = tk.Label(self.root, textvariable=self.title_var, fg=self.fg_color, bg=self.bg_color,
                             font=("VCR OSD Mono", 16, "bold"), justify="left",
                             padx=10, pady=10, wraplength=750)
         self.title_label.pack()
@@ -61,12 +65,12 @@ class GUI:
         self.scrolling_summary = None
         try:
             if config_class.show_scroller:
-                self.scrolling_summary = ScrollingTextWidget(self.root, "Loading weather data...", width=80, speed=150)
+                self.scrolling_summary = ScrollingTextWidget(self.root, "Loading weather data...", width=80, speed=150, bg_color_ref=self.bg_color, fg_color_ref=self.fg_color)
         except Exception:
             self.scrolling_summary = None
 
         self.summary_var = tk.StringVar(value="Loading weather data...")
-        # self.summary_label = tk.Label(self.root, textvariable=self.summary_var, fg="lime", bg="black",
+        # self.summary_label = tk.Label(self.root, textvariable=self.summary_var, fg=self.fg_color, bg=self.bg_color,
         #             font=("VCR OSD Mono", 16, "bold"), justify="left",
         #             padx=10, pady=10, wraplength=750)
         # self.summary_label.pack()
@@ -76,7 +80,7 @@ class GUI:
             logging.info("Showing link")
             self.link_label = tk.Label(
                 self.root, textvariable=self.link_var,
-                fg="cyan", bg="black",
+                fg="cyan", bg=self.bg_color,
                 font=("VCR OSD Mono", 10), justify="left",
                 padx=10, pady=10
             )
@@ -88,7 +92,7 @@ class GUI:
         self.current_warning_summary_var = tk.StringVar(value="No warnings in effect.")
         self.current_warning_title_label = tk.Label(
                 self.root, textvariable=self.current_warning_title_var,
-                fg="lime", bg="black",
+                fg="lime", bg=self.bg_color,
                 font=("VCR OSD Mono", 16, "bold"), justify="left",
                 padx=10, pady=10, wraplength=750
         )
@@ -96,7 +100,7 @@ class GUI:
 
         self.current_warning_summary = tk.Label(
             self.root, textvariable=self.current_warning_summary_var,
-            fg="lime", bg="black",
+            fg="lime", bg=self.bg_color,
             font=("VCR OSD Mono", 16, "bold"), justify="left",
             padx=10, pady=10, wraplength=750
         )
@@ -105,14 +109,14 @@ class GUI:
         self.status_var = tk.StringVar(value="")
         self.status_label = tk.Label(
             self.root, textvariable=self.status_var,
-            fg="lime", bg="black",
+            fg="lime", bg=self.bg_color,
             font=("Courier", 10)
         )
         self.status_label.pack(side=tk.BOTTOM, pady=10)
 
         self.designed_by_label = tk.Label(
             self.root, text=self.designed_by,
-            fg="cyan", bg="black",
+            fg="cyan", bg=self.bg_color,
             font=("Courier", 10), justify="left"
         )
         self.designed_by_label.pack(side=tk.BOTTOM, pady=10, padx=10)
@@ -120,7 +124,7 @@ class GUI:
         self.timestamp_var = tk.StringVar()
         self.timestamp_label = tk.Label(
             self.root, textvariable=self.timestamp_var,
-            fg="lime", bg="black",
+            fg="lime", bg=self.bg_color,
             font=("Courier", 10)
         )
         self.timestamp_label.pack(side=tk.BOTTOM, pady=10)
@@ -169,12 +173,12 @@ class ScreenState():
 
     def display_flash_off(self):
         """Make the screen flash off."""
-        self.gui.title_label.config(fg="black", bg="black")
-        self.gui.current_warning_title_label.config(fg="black", bg="black")
-        self.gui.current_warning_summary.config(fg="black", bg="black")
-        self.gui.status_label.config(fg="black", bg="black")
-        self.gui.timestamp_label.config(fg="black", bg="black")
-        self.gui.designed_by_label.config(fg="black", bg="black")
+        self.gui.title_label.config(fg="black", bg=self.gui.bg_color)
+        self.gui.current_warning_title_label.config(fg="black", bg=self.gui.bg_color)
+        self.gui.current_warning_summary.config(fg="black", bg=self.gui.bg_color)
+        self.gui.status_label.config(fg="black", bg=self.gui.bg_color)
+        self.gui.timestamp_label.config(fg="black", bg=self.gui.bg_color)
+        self.gui.designed_by_label.config(fg="black", bg=self.gui.bg_color)
         if getattr(self.gui, 'scrolling_summary', None):
             ScrollingTextWidget.flash_black(self.gui.scrolling_summary)
         self.gui.root.update()
@@ -182,12 +186,12 @@ class ScreenState():
 
     def display_flash_on(self):
         """Make the screen flash on."""
-        self.gui.title_label.config(fg="lime", bg="black")
-        self.gui.current_warning_title_label.config(fg="lime", bg="black")
-        self.gui.current_warning_summary.config(fg="lime", bg="black")
-        self.gui.status_label.config(fg="lime", bg="black")
-        self.gui.timestamp_label.config(fg="lime", bg="black")
-        self.gui.designed_by_label.config(fg="cyan", bg="black")
+        self.gui.title_label.config(fg="lime", bg=self.gui.bg_color)
+        self.gui.current_warning_title_label.config(fg="lime", bg=self.gui.bg_color)
+        self.gui.current_warning_summary.config(fg="lime", bg=self.gui.bg_color)
+        self.gui.status_label.config(fg="lime", bg=self.gui.bg_color)
+        self.gui.timestamp_label.config(fg="lime", bg=self.gui.bg_color)
+        self.gui.designed_by_label.config(fg="cyan", bg=self.gui.bg_color)
         self.gui.root.update()
 
 class Networking:
@@ -345,9 +349,16 @@ class WeatherFetcher:
 
 config_class = Config()
 
+if config_class.dark_mode:
+    bg_color = "black"
+    fg_color = "lime"
+else:
+    bg_color = "blue"
+    fg_color = "white"
+
 networking = Networking()
 
-gui_class = GUI()
+gui_class = GUI(bg_color_ref=bg_color, fg_color_ref=fg_color)
 # Open the command window on startup
 gui_class.open_command_window()
 gui_class.weather_fetcher.get_weather()

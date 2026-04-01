@@ -6,3 +6,4 @@ class Config:
         self.port = 2046
         self.write_log = True
         self.show_scroller = True
+        self.dark_mode = False
