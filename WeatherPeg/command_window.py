@@ -1,9 +1,14 @@
 import logging
 import tkinter as tk
 
-import radar_helper
-from browser_helper import WebOpen
-from config import Config
+try:
+    from . import radar_helper
+    from .browser_helper import WebOpen
+    from .config import Config
+except ImportError:
+    import radar_helper
+    from browser_helper import WebOpen
+    from config import Config
 
 class CommandWindow:
     """Class to create and manage the command window"""
