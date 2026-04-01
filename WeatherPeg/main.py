@@ -298,7 +298,7 @@ class WeatherFetcher:
     def logger(self):
         """Log current weather data to a file if enabled in config."""
         if config_class.write_log:
-            filename = "txt/history.txt"
+            filename = "WeatherPeg/txt/history.txt"
             logged_time = self.gui.timestamp_var.get()
             # Ensure directory exists
             os.makedirs(os.path.dirname(filename), exist_ok=True)

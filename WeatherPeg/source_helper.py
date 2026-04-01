@@ -1,15 +1,15 @@
 import logging
 
-SOURCE = "txt/source.txt"
+SOURCE = "WeatherPeg/txt/source.txt"
 try:
     with open(SOURCE, "r", encoding="utf-8") as RSS:
         RSS_URL = RSS.read().strip()
 except FileNotFoundError:
     logging.warning(f"{SOURCE} not found!")
     logging.warning("You need a file called source.txt with a URL pointing towards an"
-                    "XML file so the software knows where to get the information from!!")
+                    " XML file so the software knows where to get the information from!!")
 
-COORD_SOURCE = "txt/coord_source.txt"
+COORD_SOURCE = "WeatherPeg/txt/coord_source.txt"
 
 try:
     with open(COORD_SOURCE, "r", encoding="utf-8") as f:

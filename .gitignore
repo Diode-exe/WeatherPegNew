@@ -1,6 +1,6 @@
 history/
 __pycache__/
 images/
-txt/history.txt
+WeatherPeg/txt/history.txt
 *.ttf
 .venv/
