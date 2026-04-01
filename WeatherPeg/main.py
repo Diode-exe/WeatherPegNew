@@ -19,6 +19,7 @@ try:
     from .webserver_helper import WebServerHelper
     from .browser_helper import WebOpen
     from . import webserver_helper as _ws
+    from . import notification_helper
 except ImportError:
     import source_helper
     import command_window
@@ -28,6 +29,7 @@ except ImportError:
     from webserver_helper import WebServerHelper
     from browser_helper import WebOpen
     import webserver_helper as _ws
+    import notification_helper
 
 root_logger = getLogger()
 if not root_logger.handlers:
@@ -55,6 +57,8 @@ class GUI:
         self.title_label.pack()
 
         web_open = WebOpen()
+
+        self.nfh = notification_helper.NotificationHelper()
 
         self.port = config_class.port
         if self.port is None:
