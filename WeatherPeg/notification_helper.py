@@ -5,7 +5,7 @@ class NotificationHelper:
     def __init__(self):
         self.notification = Notify()
 
-    def send_notification(self, title: str, message: str) -> None:
+    def send_notification(self, title: str, message: str, block=False) -> None:
         """
         Send a desktop notification.
         """
@@ -13,4 +13,4 @@ class NotificationHelper:
         self.notification.message = message
         self.notification.title = title
         self.notification.message = message
-        self.notification.send()
+        self.notification.send(block=block)
